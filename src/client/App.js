@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
-import './App.css';
+import React from 'react';
+import Nav from './components/Nav';
+import Sidebar from './containers/Sidebar';
+import styles from './App.sass';
 
-class App extends Component {
-  render() {
+const App = () => {
     return (
-      <div className="App"></div>
+		<div className={styles.container} >
+			<Nav />
+			<Sidebar />
+		</div>
     );
-  }
 }
 
 export default App;
