@@ -7,7 +7,7 @@ const port = process.env.PORT || 5000;
 function search(query) {
 	return function(element) {
 		for(var i in query) {
-			if(query[i] != element[i]) {
+			if(query[i] !== element[i]) {
 				return false;
 			}
 		}
