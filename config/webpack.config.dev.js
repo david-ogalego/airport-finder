@@ -11,6 +11,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -155,39 +156,61 @@ module.exports = {
           // "css" loader resolves paths in CSS and adds assets as dependencies.
           // "style" loader turns CSS into JS modules that inject <style> tags.
           // In production, we use a plugin to extract that CSS to a file, but
-          // in development "style" loader enables hot editing of CSS.
+		  // in development "style" loader enables hot editing of CSS.
           {
-            test: /\.css$/,
-            use: [
-              require.resolve('style-loader'),
-              {
-                loader: require.resolve('css-loader'),
-                options: {
-                  importLoaders: 1,
-                },
-              },
-              {
-                loader: require.resolve('postcss-loader'),
-                options: {
-                  // Necessary for external CSS imports to work
-                  // https://github.com/facebookincubator/create-react-app/issues/2677
-                  ident: 'postcss',
-                  plugins: () => [
-                    require('postcss-flexbugs-fixes'),
-                    autoprefixer({
-                      browsers: [
-                        '>1%',
-                        'last 4 versions',
-                        'Firefox ESR',
-                        'not ie < 9', // React doesn't support IE8 anyway
-                      ],
-                      flexbox: 'no-2009',
-                    }),
-                  ],
-                },
-              },
-            ],
-          },
+			test: /\.(sass)$/,
+			exclude: /node_modules/,
+				loader: ExtractTextPlugin.extract({
+					fallback: 'style-loader',
+					use: [
+						{
+							loader: 'css-loader',
+							options: {
+								modules: true,
+								importLoaders: 1,
+								localIdentName: 'bz-[name]__[local]'
+							}
+						},
+						{
+							loader: require.resolve('postcss-loader'),
+							options: {
+								// Necessary for external CSS imports to work
+								// https://github.com/facebookincubator/create-react-app/issues/2677
+								ident: 'postcss',
+								plugins: () => [
+									require('postcss-flexbugs-fixes'),
+									autoprefixer({
+										browsers: [
+											'> 1%',
+											'last 3 Android versions',
+											'last 3 Chrome versions',
+											'last 3 ChromeAndroid versions',
+											'last 3 Edge versions',
+											'last 3 Firefox versions',
+											'last 3 FirefoxAndroid versions',
+											'last 3 iOS versions',
+											'last 3 Opera versions',
+											'last 3 OperaMini versions',
+											'last 3 Safari versions',
+											'Firefox ESR',
+											'not ie < 11', // React doesn't support IE8 anyway
+										],
+										flexbox: 'no-2009',
+									}),
+								],
+							},
+						},
+						{ loader: 'sass-loader?sourceMap' },
+					]
+					})
+				},
+				{
+					test: /\.css$/,
+					loader: ExtractTextPlugin.extract({
+						fallback: 'style-loader',
+						use: ['css-loader']
+					})
+				},
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
           // In production, they would get copied to the `build` folder.
@@ -211,6 +234,7 @@ module.exports = {
     ],
   },
   plugins: [
+	new ExtractTextPlugin('style.css', { allChunks: true }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
