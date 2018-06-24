@@ -7,7 +7,7 @@ import styles from './App.sass';
 const App = () => {
     return (
 		<div className={styles.container} >
-			<Nav />
+			<Nav title='Airport finder' />
 			<Sidebar />
 			<ListAirports />
 		</div>
