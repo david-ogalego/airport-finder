@@ -3,24 +3,22 @@ import PropTypes from 'prop-types';
 import styles from './Table.sass';
 
 const Table = (props) => (
-	<section className={styles.container}>
-		<ul className={styles.ul}>
-			<li className={styles.header}>
-				{
-					props.columnTitles.map((title, index) => <span key={index}>{title}</span>)
-				}
-			</li>
+	<ul className={styles.ul}>
+		<li className={styles.header}>
 			{
-				props.rowsData.map((data, index) => 
-					<li key={index} className={styles.row}>
-						{
-							Object.values(data).map((columnData, index) => <span key={index}>{columnData}</span>)
-						}
-					</li>
-				)
+				props.columnTitles.map((title, index) => <span key={index}>{title}</span>)
 			}
-		</ul>
-	</section>
+		</li>
+		{
+			props.rowsData.map((data, index) => 
+				<li key={index} className={styles.row}>
+					{
+						Object.values(data).map((columnData, index) => <span key={index}>{columnData}</span>)
+					}
+				</li>
+			)
+		}
+	</ul>
 );
 
 Table.defaultProps = {
