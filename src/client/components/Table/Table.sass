@@ -11,4 +11,14 @@
 .row
 	margin-left: 50px
 	span
-		margin: 0 50px
+		margin: 0 25px
+		float: left
+		min-width: 20px
+		min-height: 18px
+		width: 5%
+		&:first-child,
+		&:nth-child(2)
+			width: 20%
+			text-overflow: ellipsis
+			white-space: nowrap
+			overflow: hidden

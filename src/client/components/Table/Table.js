@@ -13,7 +13,7 @@ const Table = (props) => (
 			props.rowsData.map((data, index) => 
 				<li key={index} className={styles.row}>
 					{
-						Object.values(data).map((columnData, index) => <span key={index}>{columnData}</span>)
+						Object.values(data).map((columnData, index) => <span title={columnData} key={index}>{columnData}</span>)
 					}
 				</li>
 			)
