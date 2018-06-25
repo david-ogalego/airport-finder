@@ -29,9 +29,18 @@ app.get('/airports', (req, res) => {
 		delete req.query.name;
 	}
 	const airportsFilteredByQuery = airportsFilteredByName.filter(search(req.query));
-	console.log(airportsFilteredByQuery.length);
 	const airportsFiltered = airportsFilteredByQuery.slice(0, 20);
 	return res.send(airportsFiltered);
+});
+
+app.get('/types', (req, res) => {
+	const types = [];
+	airportsData.forEach(airport => {
+		if (!types.includes(airport.type)) {
+			types.push(airport.type);
+		}
+	});
+	return res.send(types);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

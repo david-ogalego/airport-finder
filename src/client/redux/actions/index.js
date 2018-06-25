@@ -1,6 +1,7 @@
 import {
 	RECEIVE_AIRPORTS,
-	REQUEST_AIRPORTS
+	REQUEST_AIRPORTS,
+	RECEIVE_TYPES
 } from './actionTypes';
 
 export const requestAirports = () => ({
@@ -35,3 +36,19 @@ export const fetchAirports = ({ filterName, filterType }) => (dispatch) => {
 			console.log(`There has been a problem with your fetch operation: ${error}`);
 		});
 };
+
+export const receiveTypes = types => ({
+	type: RECEIVE_TYPES,
+	types
+});
+
+export const fetchTypes = () => (dispatch) => {
+	return fetch('/types')
+		.then(response => response.json())
+		.then((json) => {
+			return dispatch(receiveTypes(json));
+		})
+		.catch((error) => {
+			console.log(`There has been a problem with your fetch operation: ${error}`);
+		});
+}

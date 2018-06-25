@@ -3,16 +3,25 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FilterText from '../../components/FilterText';
 import FilterSelect from '../../components/FilterSelect';
-import { fetchAirports } from '../../redux/actions';
+import { fetchAirports, fetchTypes } from '../../redux/actions';
 import styles from './Sidebar.sass';
 
 class Sidebar extends Component {
 	static propTypes = {
-		onChangeFilter: PropTypes.func
+		types: PropTypes.arrayOf(PropTypes.object),
+		onChangeFilter: PropTypes.func,
+		onMountComponent: PropTypes.func
+	}
+	static defaultProps = {
+		types: []
 	}
 	state = {
 		filterName: '',
 		filterType: ''
+	}
+	componentDidMount() {
+		const { onMountComponent } = this.props;
+		onMountComponent();
 	}
 	onChangeName = (event) => {
 		const filterName = event.currentTarget.value;
@@ -27,6 +36,7 @@ class Sidebar extends Component {
 		}, () => this.props.onChangeFilter(this.state));
 	}
 	render() {
+		const { types } = this.props;
 		return (
 			<section className={styles.container}>
 				<div className={styles.filter}>
@@ -41,15 +51,10 @@ class Sidebar extends Component {
 						id='select-filter-type'
 						placeholder='Filter by type'
 						defaultValue=''
-						options={[
-							{
-								value: 'airport',
-								text: 'airport'
-							},{
-								value: 'heliport',
-								text: 'heliport'
-							}
-						]}
+						options={types.map((type) => ({
+							value: type,
+							text: type
+						}))}
 						onChange={this.onChangeType}
 					/>
 				</div>
@@ -58,9 +63,12 @@ class Sidebar extends Component {
 	}
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = state => ({
+	types: state.filters.types
+});
 
 const mapDispatchToProps = dispatch => ({
+	onMountComponent: () => dispatch(fetchTypes()),
 	onChangeFilter: (filters) => {
 		dispatch(fetchAirports(filters));
 	}
