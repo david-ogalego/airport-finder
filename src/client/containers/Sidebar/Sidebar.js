@@ -9,7 +9,7 @@ import styles from './Sidebar.sass';
 class Sidebar extends Component {
 	static propTypes = {
 		countries: PropTypes.arrayOf(PropTypes.object),
-		types: PropTypes.arrayOf(PropTypes.object),
+		types: PropTypes.arrayOf(PropTypes.string),
 		onChangeFilter: PropTypes.func,
 		onMountComponent: PropTypes.func
 	}
