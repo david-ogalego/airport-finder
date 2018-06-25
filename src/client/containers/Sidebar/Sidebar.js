@@ -8,12 +8,14 @@ import styles from './Sidebar.sass';
 
 class Sidebar extends Component {
 	static propTypes = {
+		countries: PropTypes.arrayOf(PropTypes.object),
 		types: PropTypes.arrayOf(PropTypes.object),
 		onChangeFilter: PropTypes.func,
 		onMountComponent: PropTypes.func
 	}
 	static defaultProps = {
-		types: []
+		types: [],
+		countries: []
 	}
 	state = {
 		filterName: '',
@@ -35,8 +37,14 @@ class Sidebar extends Component {
 			filterType
 		}, () => this.props.onChangeFilter(this.state));
 	}
+	onChangeCountry = (event) => {
+		const filterCountry = event.currentTarget.value;
+		this.setState({
+			filterCountry
+		}, () => this.props.onChangeFilter(this.state));
+	}
 	render() {
-		const { types } = this.props;
+		const { countries, types } = this.props;
 		return (
 			<section className={styles.container}>
 				<div className={styles.filter}>
@@ -58,13 +66,26 @@ class Sidebar extends Component {
 						onChange={this.onChangeType}
 					/>
 				</div>
+				<div className={styles.filter}>
+					<FilterSelect
+						id='select-filter-country'
+						placeholder='Filter by country'
+						defaultValue=''
+						options={countries.map((country) => ({
+							value: country.code,
+							text: country.name
+						}))}
+						onChange={this.onChangeCountry}
+					/>
+				</div>
 			</section>
 		);
 	}
 }
 
 const mapStateToProps = state => ({
-	types: state.filters.types
+	types: state.filters.types,
+	countries: state.countries.countries
 });
 
 const mapDispatchToProps = dispatch => ({

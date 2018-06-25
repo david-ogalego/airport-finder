@@ -5,25 +5,35 @@ import { fetchAirports } from '../../redux/actions';
 import Table from '../../components/Table';
 import styles from './ListAirports.sass';
 
+function getCountryNameFromAirport(countries, airport) {
+	const country = countries.find((country) => airport.iso === country.code);
+	if (country) {
+		return country.name;
+	}
+	return '';
+}
+
 class ListAirports extends Component {
 	static propTypes = {
 		airports: PropTypes.arrayOf(PropTypes.object),
+		countries: PropTypes.arrayOf(PropTypes.object),
 		loadingAirports: PropTypes.bool,
 		onMountComponent: PropTypes.func
 	}
 	static defaultProps = {
-		airports: []
+		airports: [],
+		countries: []
 	}
 	componentDidMount() {
 		const { onMountComponent } = this.props;
 		onMountComponent();
 	}
 	render() {
-		const { loadingAirports, airports } = this.props;
+		const { loadingAirports, airports, countries } = this.props;
 		if (loadingAirports) return 'loading';
 		const airportsData = airports.map((airport) => ({
 			name: airport.name,
-			country: airport.iata,
+			country: getCountryNameFromAirport(countries, airport),
 			type: airport.type,
 			state: airport.status,
 			continent: airport.continent,
@@ -42,7 +52,8 @@ class ListAirports extends Component {
 
 const mapStateToProps = state => ({
 	airports: state.airports.airports,
-	loadingAirports: state.airports.loadingAirports
+	loadingAirports: state.airports.loadingAirports,
+	countries: state.countries.countries
 })
 
 const mapDispatchToProps = dispatch => ({

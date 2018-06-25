@@ -1,4 +1,5 @@
 const airportsData = require('../data/airports.json');
+const countriesData = require('../data/countries.json');
 const express = require('express');
 
 const app = express();
@@ -41,6 +42,14 @@ app.get('/types', (req, res) => {
 		}
 	});
 	return res.send(types);
+});
+
+app.get('/countries', (req, res) => {
+	const countries = countriesData.map((country) => ({
+		name: country.name,
+		code: country["alpha-2"]
+	}))
+	return res.send(countries);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
