@@ -34,7 +34,7 @@ app.get('/airports', (req, res) => {
 	if (req.query.type || req.query.country) {
 		airportsFilteredByQuery = airportsFilteredByName.filter(search(req.query));
 	}
-	const airportsFiltered = airportsFilteredByQuery.slice(0, req.query.take);
+	const airportsFiltered = airportsFilteredByQuery.slice(req.query.skip, req.query.take);
 	return res.send(airportsFiltered);
 });
 

@@ -28,8 +28,10 @@ export const fetchAirports = ({ filterName, filterType, filterCountry, getMoreAi
 	} 
 	dispatch(requestAirports({ filterName, filterType, filterCountry, page }));
 	let filterUrl = '';
-	const take = page * 20;
-	filterUrl += `?take=${take}&`;
+	const itemsPerPage = 20;
+	const take = page * itemsPerPage;
+	const skip = take - itemsPerPage;
+	filterUrl += `?take=${take}&skip=${skip}&`;
 	if (filterName) {
 		filterUrl += `name=${filterName}&`;
 	}
