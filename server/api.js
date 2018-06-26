@@ -1,5 +1,5 @@
-const airportsData = require('../data/airports.json');
-const countriesData = require('../data/countries.json');
+const airportsData = require('./data/airports.json');
+const countriesData = require('./data/countries.json');
 const express = require('express');
 
 const app = express();
