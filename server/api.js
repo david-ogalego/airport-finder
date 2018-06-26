@@ -30,8 +30,11 @@ app.get('/airports', (req, res) => {
 		airportsFilteredByName = airportsData.filter(searchByName(req.query.name));
 		delete req.query.name;
 	}
-	const airportsFilteredByQuery = airportsFilteredByName.filter(search(req.query));
-	const airportsFiltered = airportsFilteredByQuery.slice(0, 20);
+	let airportsFilteredByQuery = airportsFilteredByName;
+	if (req.query.type || req.query.country) {
+		airportsFilteredByQuery = airportsFilteredByName.filter(search(req.query));
+	}
+	const airportsFiltered = airportsFilteredByQuery.slice(0, req.query.take);
 	return res.send(airportsFiltered);
 });
 

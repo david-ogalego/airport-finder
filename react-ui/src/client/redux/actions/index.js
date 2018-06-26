@@ -5,9 +5,13 @@ import {
 	RECEIVE_TYPES
 } from './actionTypes';
 
-export const requestAirports = () => ({
+export const requestAirports = ({ filterName, filterType, filterCountry, page }) => ({
 	type: REQUEST_AIRPORTS,
-	loadingAirports: true
+	loadingAirports: true,
+	filterName,
+	filterType,
+	filterCountry,
+	page
 });
 
 export const receiveAirports = airports => ({
@@ -16,12 +20,16 @@ export const receiveAirports = airports => ({
 	loadingAirports: false,
 });
 
-export const fetchAirports = ({ filterName, filterType, filterCountry }) => (dispatch) => {
-	dispatch(requestAirports());
+export const fetchAirports = ({ filterName, filterType, filterCountry, getMoreAirports }) => (dispatch, getState) => {
+		const currentState = getState();
+	let page = currentState.airports.page;
+	if (getMoreAirports) {
+		page = currentState.airports.page + 1;
+	} 
+	dispatch(requestAirports({ filterName, filterType, filterCountry, page }));
 	let filterUrl = '';
-	if (filterName || filterType || filterCountry) {
-		filterUrl = '?';
-	}
+	const take = page * 20;
+	filterUrl += `?take=${take}&`;
 	if (filterName) {
 		filterUrl += `name=${filterName}&`;
 	}

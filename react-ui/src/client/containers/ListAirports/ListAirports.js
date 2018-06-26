@@ -18,6 +18,7 @@ class ListAirports extends Component {
 		airports: PropTypes.arrayOf(PropTypes.object),
 		countries: PropTypes.arrayOf(PropTypes.object),
 		loadingAirports: PropTypes.bool,
+		loadMore: PropTypes.func,
 		onMountComponent: PropTypes.func
 	}
 	static defaultProps = {
@@ -45,6 +46,7 @@ class ListAirports extends Component {
 					columnTitles={['Name', 'Country', 'Type', 'State', 'Continent', 'Size']}
 					rowsData={airportsData}
 				/>
+				<button onClick={this.props.loadMore}>Load More</button>
 			</section>
 		)
 	}
@@ -57,7 +59,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	onMountComponent: () => dispatch(fetchAirports({}))
+	onMountComponent: () => dispatch(fetchAirports({})),
+	loadMore: () => dispatch(fetchAirports({ getMoreAirports: true })),
 })
 
 export default connect(

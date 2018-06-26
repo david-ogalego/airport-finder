@@ -6,10 +6,13 @@ import {
 const airports = (state = [], action) => {
 	switch (action.type) {
 	case REQUEST_AIRPORTS:
-		return {
-			...state,
-			loadingAirports: action.loadingAirports
-		};
+		return Object.assign({}, state, {
+			loadingAirports: action.loadingAirports,
+			filterName: action.filterName,
+			filterType: action.filterType,
+			filterCountry: action.filterCountry,
+			page: action.page
+		});
 	case RECEIVE_AIRPORTS:
 		return Object.assign({}, state, {
 			airports: action.airports,
