@@ -52,4 +52,10 @@ app.get('/countries', (req, res) => {
 	return res.send(countries);
 });
 
+app.use(express.static(path.join(__dirname, '/../react-ui/build')));
+
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname + '/../react-ui/build/index.html'));
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
