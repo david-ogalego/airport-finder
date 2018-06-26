@@ -11,11 +11,11 @@ const airports = (state = [], action) => {
 			filterName: action.filterName,
 			filterType: action.filterType,
 			filterCountry: action.filterCountry,
-			page: action.page
+			page: action.resetPagination ? 1 : action.getMoreAirports ? state.page + 1 : 1
 		});
 	case RECEIVE_AIRPORTS:
 		return Object.assign({}, state, {
-			airports: state.airports.concat(action.airports),
+			airports: action.resetAirports ? action.airports : state.airports.concat(action.airports),
 			loadingAirports: action.loadingAirports,
 		});
 	default:

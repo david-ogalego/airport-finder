@@ -31,7 +31,6 @@ class ListAirports extends Component {
 	}
 	render() {
 		const { loadingAirports, airports, countries } = this.props;
-		if (loadingAirports) return 'loading';
 		const airportsData = airports.map((airport) => ({
 			name: airport.name,
 			country: getCountryNameFromAirport(countries, airport),
@@ -47,8 +46,9 @@ class ListAirports extends Component {
 					rowsData={airportsData}
 				/>
 				<button onClick={this.props.loadMore}>Load More</button>
+				{loadingAirports ? <div className={styles.spinner} /> : null }
 			</section>
-		)
+		);
 	}
 }
 

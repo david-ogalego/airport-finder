@@ -6,12 +6,19 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 5000;
 
-function search(query) {
+function searchByType(query) {
 	return function(element) {
-		for(var i in query) {
-			if(query[i] !== element[i]) {
-				return false;
-			}
+		if(query.type !== element.type) {
+			return false;
+		}
+		return true;
+	}
+}
+
+function searchByCountry(query) {
+	return function(element) {
+		if(query.iso !== element.iso) {
+			return false;
 		}
 		return true;
 	}
@@ -28,13 +35,18 @@ app.get('/airports', (req, res) => {
 	let airportsFilteredByName = airportsData;
 	if (req.query.name) {
 		airportsFilteredByName = airportsData.filter(searchByName(req.query.name));
-		delete req.query.name;
 	}
-	let airportsFilteredByQuery = airportsFilteredByName;
-	if (req.query.type || req.query.country) {
-		airportsFilteredByQuery = airportsFilteredByName.filter(search(req.query));
+	let airportsFilteredByType = airportsFilteredByName;
+	console.log('airportsFilteredByType' + airportsFilteredByType.length)
+	if (req.query.type) {
+		airportsFilteredByType = airportsFilteredByName.filter((airport) => airport.type === req.query.type);
 	}
-	const airportsFiltered = airportsFilteredByQuery.slice(req.query.skip, req.query.take);
+	console.log('airportsFilteredByType' + airportsFilteredByType.length)
+	let airportsFilteredByCountry = airportsFilteredByType;
+	if (req.query.country) {
+		airportsFilteredByCountry = airportsFilteredByType.filter(searchByCountry(req.query.country));
+	}
+	const airportsFiltered = airportsFilteredByCountry.slice(req.query.skip, req.query.take);
 	return res.send(airportsFiltered);
 });
 

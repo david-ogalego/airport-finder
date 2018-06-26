@@ -91,7 +91,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	onMountComponent: () => dispatch(fetchTypes()),
 	onChangeFilter: (filters) => {
-		dispatch(fetchAirports(filters));
+		dispatch(fetchAirports({...filters, resetPagination: true} ));
 	}
 })
 

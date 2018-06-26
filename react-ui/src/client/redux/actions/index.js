@@ -5,46 +5,44 @@ import {
 	RECEIVE_TYPES
 } from './actionTypes';
 
-export const requestAirports = ({ filterName, filterType, filterCountry, page }) => ({
+export const requestAirports = ({ filterName, filterType, filterCountry, getMoreAirports, resetPagination }) => ({
 	type: REQUEST_AIRPORTS,
 	loadingAirports: true,
 	filterName,
 	filterType,
 	filterCountry,
-	page
+	getMoreAirports,
+	resetPagination
 });
 
-export const receiveAirports = airports => ({
+export const receiveAirports = (airports, resetAirports) => ({
 	type: RECEIVE_AIRPORTS,
 	airports,
 	loadingAirports: false,
+	resetAirports
 });
 
-export const fetchAirports = ({ filterName, filterType, filterCountry, getMoreAirports }) => (dispatch, getState) => {
-		const currentState = getState();
-	let page = currentState.airports.page;
-	if (getMoreAirports) {
-		page = currentState.airports.page + 1;
-	} 
-	dispatch(requestAirports({ filterName, filterType, filterCountry, page }));
+export const fetchAirports = ({ filterName, filterType, filterCountry, getMoreAirports, resetPagination }) => (dispatch, getState) => {
+	dispatch(requestAirports({ filterName, filterType, filterCountry, getMoreAirports, resetPagination }));
 	let filterUrl = '';
 	const itemsPerPage = 20;
-	const take = page * itemsPerPage;
+	const currentState = getState();
+	const take = currentState.airports.page * itemsPerPage;
 	const skip = take - itemsPerPage;
 	filterUrl += `?take=${take}&skip=${skip}&`;
-	if (filterName) {
-		filterUrl += `name=${filterName}&`;
+	if (currentState.airports.filterName) {
+		filterUrl += `name=${currentState.airports.filterName}&`;
 	}
-	if (filterType) {
-		filterUrl += `type=${filterType}&`;
+	if (currentState.airports.filterType) {
+		filterUrl += `type=${currentState.airports.filterType}&`;
 	}
-	if (filterCountry) {
-		filterUrl += `iso=${filterCountry}&`;
+	if (currentState.airports.filterCountry) {
+		filterUrl += `iso=${currentState.airports.filterCountry}&`;
 	}
 	return fetch(`/airports${filterUrl}`)
 		.then(response => response.json())
 		.then((json) => {
-			return dispatch(receiveAirports(json));
+			return dispatch(receiveAirports(json, resetPagination));
 		})
 		.catch((error) => {
 			console.log(`There has been a problem with your fetch operation: ${error}`);
