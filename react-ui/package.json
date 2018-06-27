@@ -13,6 +13,7 @@
     "babel-runtime": "6.26.0",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "chalk": "1.1.3",
+    "core-js": "^2.5.7",
     "dotenv": "4.0.0",
     "dotenv-expand": "4.2.0",
     "eslint-config-react-app": "^2.1.0",
@@ -48,7 +49,7 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-	  "start": "run-p startserver startclient",
+    "start": "run-p startserver startclient",
     "startclient": "node scripts/start.js",
     "startserver": "node ../server/api.js",
     "build": "node scripts/build.js",
