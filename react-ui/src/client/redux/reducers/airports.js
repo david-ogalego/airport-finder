@@ -13,6 +13,7 @@ const airports = (state = [], action) => {
 		return Object.assign({}, state, {
 			airports: action.page > 1 ? state.airports.concat(action.airports) : action.airports,
 			loadingAirports: action.loadingAirports,
+			hasMoreAirports: action.hasMoreAirports
 		});
 	default:
 		return state

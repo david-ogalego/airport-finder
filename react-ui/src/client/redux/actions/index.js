@@ -23,11 +23,12 @@ export const requestAirports = () => ({
 	loadingAirports: true
 });
 
-export const receiveAirports = ({airports, page }) => ({
+export const receiveAirports = ({airports, page, hasMoreAirports }) => ({
 	type: RECEIVE_AIRPORTS,
 	airports,
 	page,
-	loadingAirports: false
+	loadingAirports: false,
+	hasMoreAirports
 });
 
 export const fetchAirports = () => (dispatch, getState) => {
@@ -37,7 +38,7 @@ export const fetchAirports = () => (dispatch, getState) => {
 	const currentState = getState();
 	const take = currentState.filters.page * itemsPerPage;
 	const skip = take - itemsPerPage;
-	filterUrl += `?take=${take}&skip=${skip}&`;
+	filterUrl += `?take=${take + 1}&skip=${skip}&`;
 	if (currentState.filters.filterName) {
 		filterUrl += `name=${currentState.filters.filterName}&`;
 	}
@@ -50,7 +51,13 @@ export const fetchAirports = () => (dispatch, getState) => {
 	return fetch(`/airports${filterUrl}`)
 		.then(response => response.json())
 		.then((json) => {
-			return dispatch(receiveAirports({airports: json, page: currentState.filters.page}));
+			const hasMoreAirports = json.length > itemsPerPage;
+			const airports = hasMoreAirports ? json.slice(0, take - 1) : json;
+			return dispatch(receiveAirports({
+				airports,
+				page: currentState.filters.page,
+				hasMoreAirports
+			}));
 		})
 		.catch((error) => {
 			console.log(`There has been a problem with your fetch operation: ${error}`);

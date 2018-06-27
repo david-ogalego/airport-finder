@@ -17,6 +17,7 @@ class ListAirports extends Component {
 	static propTypes = {
 		airports: PropTypes.arrayOf(PropTypes.object),
 		countries: PropTypes.arrayOf(PropTypes.object),
+		hasMoreAirports: PropTypes.bool,
 		loadingAirports: PropTypes.bool,
 		loadMore: PropTypes.func,
 		onMountComponent: PropTypes.func
@@ -30,7 +31,7 @@ class ListAirports extends Component {
 		onMountComponent();
 	}
 	render() {
-		const { loadingAirports, airports, countries } = this.props;
+		const { loadingAirports, airports, countries, hasMoreAirports } = this.props;
 		const airportsData = airports.map((airport) => ({
 			name: airport.name,
 			country: getCountryNameFromAirport(countries, airport),
@@ -45,7 +46,7 @@ class ListAirports extends Component {
 					columnTitles={['Name', 'Country', 'Type', 'State', 'Continent', 'Size']}
 					rowsData={airportsData}
 				/>
-				<button onClick={this.props.loadMore}>Load More</button>
+				{hasMoreAirports ? <button onClick={this.props.loadMore}>Load More</button> : null}
 				{loadingAirports ? <div className={styles.spinner} /> : null }
 			</section>
 		);
@@ -55,7 +56,8 @@ class ListAirports extends Component {
 const mapStateToProps = state => ({
 	airports: state.airports.airports,
 	loadingAirports: state.airports.loadingAirports,
-	countries: state.countries.countries
+	countries: state.countries.countries,
+	hasMoreAirports: state.airports.hasMoreAirports
 })
 
 const mapDispatchToProps = dispatch => ({
