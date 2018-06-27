@@ -43,8 +43,8 @@ app.get('/airports', (req, res) => {
 	}
 	console.log('airportsFilteredByType' + airportsFilteredByType.length)
 	let airportsFilteredByCountry = airportsFilteredByType;
-	if (req.query.country) {
-		airportsFilteredByCountry = airportsFilteredByType.filter(searchByCountry(req.query.country));
+	if (req.query.iso) {
+		airportsFilteredByCountry = airportsFilteredByType.filter((airport) => airport.iso === req.query.iso);
 	}
 	const airportsFiltered = airportsFilteredByCountry.slice(req.query.skip, req.query.take);
 	return res.send(airportsFiltered);

@@ -11,7 +11,7 @@ const airports = (state = [], action) => {
 		});
 	case RECEIVE_AIRPORTS:
 		return Object.assign({}, state, {
-			airports: state.page > 1 ? state.airports.concat(action.airports) : action.airports,
+			airports: action.page > 1 ? state.airports.concat(action.airports) : action.airports,
 			loadingAirports: action.loadingAirports,
 		});
 	default:

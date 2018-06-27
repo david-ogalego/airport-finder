@@ -23,9 +23,10 @@ export const requestAirports = () => ({
 	loadingAirports: true
 });
 
-export const receiveAirports = (airports) => ({
+export const receiveAirports = ({airports, page }) => ({
 	type: RECEIVE_AIRPORTS,
 	airports,
+	page,
 	loadingAirports: false
 });
 
@@ -49,7 +50,7 @@ export const fetchAirports = () => (dispatch, getState) => {
 	return fetch(`/airports${filterUrl}`)
 		.then(response => response.json())
 		.then((json) => {
-			return dispatch(receiveAirports(json));
+			return dispatch(receiveAirports({airports: json, page: currentState.filters.page}));
 		})
 		.catch((error) => {
 			console.log(`There has been a problem with your fetch operation: ${error}`);
