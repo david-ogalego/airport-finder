@@ -33,7 +33,7 @@ class ListAirports extends Component {
 		onMountComponent();
 	}
 	render() {
-		const { airports, countries, hasMoreAirports } = this.props;
+		const { loadingAirports, airports, countries, hasMoreAirports } = this.props;
 		const airportsData = airports.map((airport) => ({
 			name: airport.name,
 			country: getCountryNameFromAirport(countries, airport),
@@ -55,8 +55,7 @@ class ListAirports extends Component {
 					</div>
 					: null
 				}
-				<Spinner />
-				{/* {loadingAirports ? <Spinner /> : null } */}
+				{loadingAirports ? <Spinner /> : null }
 			</section>
 		);
 	}
