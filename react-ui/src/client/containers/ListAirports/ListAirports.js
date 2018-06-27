@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { fetchAirports, loadMore } from '../../redux/actions';
 import Table from '../../components/Table';
 import Spinner from '../../components/Spinner';
+import Button from '../../components/Button';
 import styles from './ListAirports.sass';
 
 function getCountryNameFromAirport(countries, airport) {
@@ -32,7 +33,7 @@ class ListAirports extends Component {
 		onMountComponent();
 	}
 	render() {
-		const { loadingAirports, airports, countries, hasMoreAirports } = this.props;
+		const { airports, countries, hasMoreAirports } = this.props;
 		const airportsData = airports.map((airport) => ({
 			name: airport.name,
 			country: getCountryNameFromAirport(countries, airport),
@@ -47,8 +48,15 @@ class ListAirports extends Component {
 					columnTitles={['Name', 'Country', 'Type', 'State', 'Continent', 'Size']}
 					rowsData={airportsData}
 				/>
-				{hasMoreAirports ? <button onClick={this.props.loadMore}>Load More</button> : null}
-				{loadingAirports ? <Spinner /> : null }
+				{
+					hasMoreAirports ?
+					<div className={styles.containerButton}>
+						<Button onClick={this.props.loadMore} text={'Load More'}/> 
+					</div>
+					: null
+				}
+				<Spinner />
+				{/* {loadingAirports ? <Spinner /> : null } */}
 			</section>
 		);
 	}
