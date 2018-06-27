@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchAirports } from '../../redux/actions';
+import { fetchAirports, loadMore } from '../../redux/actions';
 import Table from '../../components/Table';
 import styles from './ListAirports.sass';
 
@@ -60,7 +60,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	onMountComponent: () => dispatch(fetchAirports({})),
-	loadMore: () => dispatch(fetchAirports({ getMoreAirports: true })),
+	loadMore: () => {
+		dispatch(loadMore());
+		dispatch(fetchAirports({ }));
+	},
 })
 
 export default connect(

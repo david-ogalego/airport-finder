@@ -1,48 +1,55 @@
 import {
+	APPLY_FILTERS,
+	LOAD_MORE,
 	RECEIVE_AIRPORTS,
 	REQUEST_AIRPORTS,
 	RECEIVE_COUNTRIES,
 	RECEIVE_TYPES
 } from './actionTypes';
 
-export const requestAirports = ({ filterName, filterType, filterCountry, getMoreAirports, resetPagination }) => ({
-	type: REQUEST_AIRPORTS,
-	loadingAirports: true,
+export const applyFilters = ({ filterName, filterType, filterCountry }) => ({
+	type: APPLY_FILTERS,
 	filterName,
 	filterType,
-	filterCountry,
-	getMoreAirports,
-	resetPagination
+	filterCountry
 });
 
-export const receiveAirports = (airports, resetAirports) => ({
+export const loadMore = () => ({
+	type: LOAD_MORE
+});
+
+export const requestAirports = () => ({
+	type: REQUEST_AIRPORTS,
+	loadingAirports: true
+});
+
+export const receiveAirports = (airports) => ({
 	type: RECEIVE_AIRPORTS,
 	airports,
-	loadingAirports: false,
-	resetAirports
+	loadingAirports: false
 });
 
-export const fetchAirports = ({ filterName, filterType, filterCountry, getMoreAirports, resetPagination }) => (dispatch, getState) => {
-	dispatch(requestAirports({ filterName, filterType, filterCountry, getMoreAirports, resetPagination }));
+export const fetchAirports = () => (dispatch, getState) => {
+	dispatch(requestAirports());
 	let filterUrl = '';
 	const itemsPerPage = 20;
 	const currentState = getState();
-	const take = currentState.airports.page * itemsPerPage;
+	const take = currentState.filters.page * itemsPerPage;
 	const skip = take - itemsPerPage;
 	filterUrl += `?take=${take}&skip=${skip}&`;
-	if (currentState.airports.filterName) {
-		filterUrl += `name=${currentState.airports.filterName}&`;
+	if (currentState.filters.filterName) {
+		filterUrl += `name=${currentState.filters.filterName}&`;
 	}
-	if (currentState.airports.filterType) {
-		filterUrl += `type=${currentState.airports.filterType}&`;
+	if (currentState.filters.filterType) {
+		filterUrl += `type=${currentState.filters.filterType}&`;
 	}
-	if (currentState.airports.filterCountry) {
-		filterUrl += `iso=${currentState.airports.filterCountry}&`;
+	if (currentState.filters.filterCountry) {
+		filterUrl += `iso=${currentState.filters.filterCountry}&`;
 	}
 	return fetch(`/airports${filterUrl}`)
 		.then(response => response.json())
 		.then((json) => {
-			return dispatch(receiveAirports(json, resetPagination));
+			return dispatch(receiveAirports(json));
 		})
 		.catch((error) => {
 			console.log(`There has been a problem with your fetch operation: ${error}`);

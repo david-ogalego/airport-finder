@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FilterText from '../../components/FilterText';
 import FilterSelect from '../../components/FilterSelect';
-import { fetchAirports, fetchTypes } from '../../redux/actions';
+import { fetchAirports, fetchTypes, applyFilters } from '../../redux/actions';
 import styles from './Sidebar.sass';
 
 class Sidebar extends Component {
@@ -91,7 +91,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	onMountComponent: () => dispatch(fetchTypes()),
 	onChangeFilter: (filters) => {
-		dispatch(fetchAirports({...filters, resetPagination: true} ));
+		dispatch(applyFilters({...filters, resetPagination: true }));
+		dispatch(fetchAirports({}));
 	}
 })
 

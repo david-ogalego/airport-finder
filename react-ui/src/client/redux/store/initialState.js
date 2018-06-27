@@ -1,6 +1,8 @@
 export default {
     airports: {
-		airports: [],
+		airports: []
+    },
+    filters: {
         page: 1
     }
 }
