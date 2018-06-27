@@ -1,0 +1,23 @@
+.spinner
+	display: inline-block
+	width: 64px
+	height: 64px
+	position: fixed
+	top: 40%
+	left: 55%
+.spinner:after
+	content: " "
+	display: block
+	width: 46px
+	height: 46px
+	margin: 1px
+	border-radius: 50%
+	border: 5px solid #000
+	border-color: #000 transparent #000 transparent
+	animation: spinner-ring 1.2s linear infinite
+
+@keyframes spinner-ring
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)
