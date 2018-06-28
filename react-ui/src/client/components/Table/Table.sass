@@ -1,31 +1,29 @@
 .ul
 	list-style-type: none
-	margin: 20px 0
+	margin: 0
 	padding: 0
 
 .header
-	margin-left: 10px
-	font-size: 21px
 	font-weight: 600
+	background-color: rgba(133, 187, 189, 0.41)
+	height: 50px
+	font-size: 21px
 	span
-		// margin: 0 50px
-		&:first-child
-			margin-left: 115px
+		margin: 12px 0px 5px 50px
+		height: 50px
+		float: left
+		min-width: 20px
+		min-height: 18px
+		width: 5%
+		&:first-child,
 		&:nth-child(2)
-			margin-left: 150px
-		&:nth-child(3)
-			margin-left: 90px
-		&:nth-child(4)
-			margin-left: 40px
-		&:nth-child(5)
-			margin-left: 35px
-		&:nth-child(6)
-			margin-left: 15px
+			width: 20%
+			text-overflow: ellipsis
+			white-space: nowrap
+			overflow: hidden
 		
 
 .row
-	margin: 5 
-	margin-left: 50px
 	span
 		margin: 5px 0px 5px 50px
 		height: 20px
