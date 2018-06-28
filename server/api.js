@@ -6,24 +6,6 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 5000;
 
-function searchByType(query) {
-	return function(element) {
-		if(query.type !== element.type) {
-			return false;
-		}
-		return true;
-	}
-}
-
-function searchByCountry(query) {
-	return function(element) {
-		if(query.iso !== element.iso) {
-			return false;
-		}
-		return true;
-	}
-}
-
 function searchByName(name) {
 	return function(element) {
 		return element && element.name && element.name.indexOf(name) > -1;
@@ -37,11 +19,9 @@ app.get('/airports', (req, res) => {
 		airportsFilteredByName = airportsData.filter(searchByName(req.query.name));
 	}
 	let airportsFilteredByType = airportsFilteredByName;
-	console.log('airportsFilteredByType' + airportsFilteredByType.length)
 	if (req.query.type) {
 		airportsFilteredByType = airportsFilteredByName.filter((airport) => airport.type === req.query.type);
 	}
-	console.log('airportsFilteredByType' + airportsFilteredByType.length)
 	let airportsFilteredByCountry = airportsFilteredByType;
 	if (req.query.iso) {
 		airportsFilteredByCountry = airportsFilteredByType.filter((airport) => airport.iso === req.query.iso);
