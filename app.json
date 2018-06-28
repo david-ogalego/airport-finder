@@ -1,0 +1,21 @@
+{
+    "name": "airport-finder",
+    "description": "Airport finder created with create react app and node API",
+    "scripts": {
+    },
+    "env": {
+    },
+    "formation": {
+      "web": {
+        "quantity": 1
+      }
+    },
+    "addons": [
+  
+    ],
+    "buildpacks": [
+      {
+        "url": "heroku/nodejs"
+      }
+    ]
+  }
