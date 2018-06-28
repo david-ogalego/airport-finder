@@ -1,7 +1,7 @@
 
 # Airport finder
 
-[Find your airport](https://airportfinder.herokuapp.com/)
+## [Find your airport](https://airportfinder.herokuapp.com/)
 
 
 ### Development
